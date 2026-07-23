@@ -6,12 +6,12 @@ import { Product } from "@/constants/categories";
 
 interface ProductCardProps {
   product: Product;
-  index: number;
+  index?: number;
+  onOpen?: (product: Product) => void;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    // Wrap the card in Next.js Link component to trigger dynamic route navigation
     <Link
       href={`/product/${product.id}`}
       className="block group bg-[#ebdcb9] text-[#191d1b] rounded-2xl p-4 shadow-xl border border-white/10 transition-all duration-300 hover:-translate-y-1.5 cursor-pointer"
