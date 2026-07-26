@@ -4,15 +4,17 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { seedProducts } from "@/constants/categories";
 import { ArrowLeft, ShoppingCart, Star } from "lucide-react";
+import { useCart } from "@/app/context/cartcontext";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { addToCart } = useCart();
 
-  // FIX: Convert both IDs to String to resolve TypeScript comparison errors
+  // Find product by comparing IDs as strings
   const product = seedProducts.find((p) => String(p.id) === String(params?.id));
 
-  // Fallback if the product ID doesn't exist
+  // Fallback if product is not found
   if (!product) {
     return (
       <div className="min-h-screen bg-[#141716] text-[#ebdcb9] flex flex-col items-center justify-center p-6">
@@ -43,7 +45,7 @@ export default function ProductDetailPage() {
           <ArrowLeft size={16} /> Back to Catalog
         </button>
 
-        {/* Detailed View Matrix */}
+        {/* Detailed View Card */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 bg-[#191d1b] border border-white/10 p-8 rounded-2xl shadow-2xl">
           {/* Image Container */}
           <div className="relative aspect-square rounded-xl overflow-hidden bg-black/20 border border-white/5">
@@ -83,8 +85,12 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
+            {/* Add To Cart Button */}
             <button
-              onClick={() => alert(`Added ${product.title} to your bag!`)}
+              onClick={() => {
+                addToCart(product);
+                alert(`Added ${product.title} to cart!`);
+              }}
               className="w-full py-4 bg-[#c5974a] hover:bg-[#b08339] text-[#191d1b] font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer"
             >
               <ShoppingCart size={16} /> Add To Order
